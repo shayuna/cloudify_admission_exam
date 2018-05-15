@@ -49,10 +49,8 @@ export function updateNodes(state=null,action){
                 method:"post",
                 data:{serializedNodes:serializedNodes},
                 error:function(oErr,sErr){
-//                    console.log("error occurred");
                 },
                 success:function(data){
-  //                  console.log ("save succeeded");
                 }
             });
             return NodesManager;
