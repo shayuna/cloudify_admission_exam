@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import { NManager,nodesHasErrored,nodeSelection,updateNodes,treeHasChanged } from './reducers';
+import { NManager,setLoadingErrorState,nodeSelection,updateNodes,treeHasChanged } from './reducers';
 
 export default combineReducers({
     NManager,
-    nodesHasErrored,
+    setLoadingErrorState,
     nodeSelection,
     updateNodes,
     treeHasChanged,

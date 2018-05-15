@@ -2,7 +2,7 @@ import NodesManager from "./NodesManager";
 
 
 
-export function nodesHasErrored(state = false, action) {
+export function setLoadingErrorState(state = false, action) {
     switch (action.type) {
         case 'NODES_HAS_ERRORED':
             return action.hasErrored;
@@ -42,6 +42,19 @@ export function updateNodes(state=null,action){
             return NodesManager;
         case "DEL_NODE":
             NodesManager.delNodeByID(action.id);
+            return NodesManager;
+        case "SAVE_NODES":
+            const serializedNodes=JSON.stringify(NodesManager.createFlatList());
+            $.post({url:"http://localhost:8080/nodes",
+                method:"post",
+                data:{serializedNodes:serializedNodes},
+                error:function(oErr,sErr){
+//                    console.log("error occurred");
+                },
+                success:function(data){
+  //                  console.log ("save succeeded");
+                }
+            });
             return NodesManager;
         default:
             return null;

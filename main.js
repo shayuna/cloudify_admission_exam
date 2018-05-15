@@ -1,9 +1,11 @@
 const express=require("express");
 const path=require("path");
+const bodyParser=require("body-parser");
 
 const app=express();
 
 app.use(express.static(path.resolve(__dirname,"public")));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get ("/nodes",function(req,res,next){
     const jExample=[
@@ -18,6 +20,10 @@ app.get ("/nodes",function(req,res,next){
         {id:7,name:"my node7",pid:null},
     ];
     res.json(jExample);
+});
+
+app.post("/nodes",function(req,res,next){
+    console.log ("got it -"+req.body.serializedNodes);
 });
 
 app.get("",function(req,res,next){

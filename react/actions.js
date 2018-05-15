@@ -23,14 +23,19 @@ export const updateNode = (id,name)=>({
 export const delNode = (id)=>({
     type:"DEL_NODE",
     id
-})
+});
+
+export const saveNodes = (id)=>({
+    type:"SAVE_NODES",
+    id
+});
 
 const nodesFetchDataSuccess = (nodes) => ({
     type: 'NODES_FETCH_DATA_SUCCESS',
     nodes
 });
 
-const nodesHasErrored1 = (bool) =>({
+const nodesHasErrored = (bool) =>({
     type: 'NODES_HAS_ERRORED',
     hasErrored: bool
 });
@@ -46,6 +51,6 @@ export function nodesFetchData(url) {
             })
             .then((response) => response.json())
             .then((nodes) => dispatch(nodesFetchDataSuccess(nodes)))
-            .catch(() => dispatch(itemsHasErrored1(true)));
+            .catch(() => dispatch(nodesHasErrored(true)));
     };
 }

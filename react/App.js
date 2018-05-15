@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import { connect } from 'react-redux';
-import { nodesFetchData,addNode,updateNode,delNode,setTreeHasChanged } from './actions';
+import { nodesFetchData,addNode,updateNode,delNode,setTreeHasChanged,saveNodes } from './actions';
 import Node from "./Node";
 import Btn from "./Btn";
 
@@ -22,8 +22,12 @@ class App extends Component {
         this.props.fetchData('http://localhost:8080/nodes');
     }
     render() {
-        console.log(this.props.selectedID);
-        if (this.props.NodesManager.arTrees){
+        if (this.props.hasErrored){
+            return (
+                <article>currently, client and server are not the best friends. you can try again in a couple of seconds</article>
+            )
+        }
+        else if (this.props.NodesManager.arTrees){
             return (
                 <article>
                     <article style={styles.actionBtnsWrapper}>
@@ -53,7 +57,7 @@ class App extends Component {
                     }
                     </article>
                     <article style={styles.actionBtnsWrapper}>
-                        <Btn caption="SAVE" onclick={()=>this.saveTree()} disabled={!this.props.treeHasChanged}/>
+                        <Btn caption="SAVE" onclick={()=>this.saveNodes()} disabled={!this.props.treeHasChanged}/>
                     </article>
                 </article>
             )
@@ -86,7 +90,8 @@ class App extends Component {
         this.props.delNode(this.props.selectedID);
         this.setTreeHasChanged();
     }
-    saveTree(){
+    saveNodes(){
+        this.props.saveNodes();
         console.log(JSON.stringify(this.props.NodesManager.createFlatList()));
     }
     setTreeHasChanged(){
@@ -100,6 +105,7 @@ const mapStateToProps = (state) => {
         NodesManager: state.NManager,
         selectedID:state.nodeSelection,
         treeHasChanged:state.treeHasChanged,
+        hasErrored:state.nodesHasErrored,
     };
 };
 
@@ -110,6 +116,7 @@ const mapDispatchToProps = (dispatch) => {
         updateNode: (id,name) => dispatch(updateNode(id,name)),
         delNode: (id) => dispatch(delNode(id)),
         setTreeHasChanged:(bool)=>dispatch(setTreeHasChanged(bool)),
+        saveNodes:()=>dispatch(saveNodes()),
     };
 };
 
